@@ -17,6 +17,9 @@ dist-ssr
 .env.local
 .env.production
 
+# Lock files (use npm only)
+bun.lockb
+
 # Documentation and Setup Guides (don't push to GitHub)
 DEPLOYMENT.md
 FULL_SETUP_GUIDE.md
