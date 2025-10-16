@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DeadlineForm } from '@/components/DeadlineForm';
 import { DeadlineList } from '@/components/DeadlineList';
 import { useDeadlines } from '@/hooks/useDeadlines';
+import { useAuth } from '@/contexts/AuthContext';
 import type { Deadline, CreateDeadlineDto } from '@/types/deadline';
 
 export default function Index() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingDeadline, setEditingDeadline] = useState<Deadline | null>(null);
+  const { user, logout } = useAuth();
 
   const {
     deadlines,
@@ -51,6 +53,21 @@ export default function Index() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="mb-8 text-center">
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-sm">
+              Welcome, <span className="font-bold">{user?.name || user?.email}</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={logout}
+              className="border-2 border-black bg-white hover:bg-red-100 font-bold"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
+          </div>
+
           <h1 className="text-5xl font-black mb-8">
             Deadline Tracker
           </h1>

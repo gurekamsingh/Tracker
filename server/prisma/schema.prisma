@@ -1,0 +1,53 @@
+// Prisma Schema for Deadline Tracker
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  deadlines Deadline[]
+
+  @@map("users")
+}
+
+enum Priority {
+  high
+  medium
+  low
+}
+
+enum Status {
+  pending
+  completed
+}
+
+model Deadline {
+  id          String   @id @default(uuid())
+  title       String   @db.VarChar(200)
+  description String?  @db.Text
+  dueDate     DateTime @map("due_date")
+  priority    Priority @default(medium)
+  status      Status   @default(pending)
+  userId      String   @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([dueDate])
+  @@index([status])
+  @@map("deadlines")
+}
+
