@@ -12,6 +12,21 @@ dist
 dist-ssr
 *.local
 
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Documentation and Setup Guides (don't push to GitHub)
+DEPLOYMENT.md
+FULL_SETUP_GUIDE.md
+BACKEND_IMPLEMENTATION_SUMMARY.md
+BACKEND_SETUP.md
+DESIGN_CHANGES.md
+server/README.md
+server/TROUBLESHOOTING.md
+server/ENV_TEMPLATE.txt
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
