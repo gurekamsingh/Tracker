@@ -12,7 +12,8 @@ export function getUrgencyLevel(dueDate: string): UrgencyLevel {
   
   const hoursUntilDue = differenceInHours(date, new Date());
   
-  if (hoursUntilDue < 24) {
+  // Auto-priority: Red if less than 3 days (72 hours) left
+  if (hoursUntilDue < 72) {
     return 'urgent';
   }
   

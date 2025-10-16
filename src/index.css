@@ -8,48 +8,48 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 215 25% 15%;
+    --background: 48 85% 88%;
+    --foreground: 0 0% 0%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card: 48 100% 96%;
+    --card-foreground: 0 0% 0%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover: 48 100% 96%;
+    --popover-foreground: 0 0% 0%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 36 100% 50%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 217 91% 60%;
+    --secondary: 48 100% 80%;
+    --secondary-foreground: 0 0% 0%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 48 80% 90%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 217 91% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 36 100% 50%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    --border: 0 0% 0%;
+    --input: 0 0% 0%;
+    --ring: 36 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     /* Urgency colors */
-    --overdue: 0 84% 60%;
-    --urgent: 38 92% 50%;
+    --overdue: 0 100% 50%;
+    --urgent: 38 100% 50%;
     --safe: 142 71% 45%;
     
     /* Status colors */
-    --status-pending: 217 91% 60%;
+    --status-pending: 0 100% 50%;
     --status-completed: 142 71% 45%;
     
     /* Priority colors */
-    --priority-high: 0 84% 60%;
-    --priority-medium: 38 92% 50%;
+    --priority-high: 0 100% 50%;
+    --priority-medium: 38 100% 50%;
     --priority-low: 142 71% 45%;
 
     --sidebar-background: 0 0% 98%;

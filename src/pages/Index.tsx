@@ -1,17 +1,15 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DeadlineForm } from '@/components/DeadlineForm';
 import { DeadlineList } from '@/components/DeadlineList';
-import { FilterBar, type Filters } from '@/components/FilterBar';
 import { useDeadlines } from '@/hooks/useDeadlines';
 import type { Deadline, CreateDeadlineDto } from '@/types/deadline';
 
 export default function Index() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingDeadline, setEditingDeadline] = useState<Deadline | null>(null);
-  const [filters, setFilters] = useState<Filters>({ priority: 'all', status: 'all' });
 
   const {
     deadlines,
@@ -22,25 +20,6 @@ export default function Index() {
     isCreating,
     isUpdating,
   } = useDeadlines();
-
-  const filteredDeadlines = useMemo(() => {
-    return deadlines.filter((deadline) => {
-      if (filters.status !== 'all' && deadline.status !== filters.status) return false;
-      if (filters.priority !== 'all' && deadline.priority !== filters.priority) return false;
-      return true;
-    });
-  }, [deadlines, filters]);
-
-  const counts = useMemo(() => {
-    return {
-      all: deadlines.length,
-      pending: deadlines.filter((d) => d.status === 'pending').length,
-      completed: deadlines.filter((d) => d.status === 'completed').length,
-      high: deadlines.filter((d) => d.priority === 'high').length,
-      medium: deadlines.filter((d) => d.priority === 'medium').length,
-      low: deadlines.filter((d) => d.priority === 'low').length,
-    };
-  }, [deadlines]);
 
   const handleCreateDeadline = (data: CreateDeadlineDto) => {
     createDeadline(data);
@@ -68,36 +47,35 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Deadline Tracker
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                Stay on top of your deadlines with real-time countdown tracking
-              </p>
-            </div>
-            <Button onClick={() => setIsFormOpen(true)} size="lg" className="gap-2">
-              <Plus className="h-5 w-5" />
-              New Deadline
+        <div className="mb-8 text-center">
+          <h1 className="text-5xl font-black mb-8">
+            Deadline Tracker
+          </h1>
+
+          {/* Simple Form Inline */}
+          <div className="mb-8">
+            <Button 
+              onClick={() => setIsFormOpen(true)} 
+              size="lg" 
+              className="border-2 border-black bg-orange-500 hover:bg-orange-600 text-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Add Deadline
             </Button>
           </div>
-
-          <FilterBar filters={filters} onFilterChange={setFilters} counts={counts} />
         </div>
 
         {/* Deadlines List */}
         {isLoading ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Loading deadlines...</p>
+            <p className="text-foreground font-bold">Loading deadlines...</p>
           </div>
         ) : (
           <DeadlineList
-            deadlines={filteredDeadlines}
+            deadlines={deadlines}
             onEdit={handleEdit}
             onDelete={deleteDeadline}
             onToggleStatus={handleToggleStatus}
