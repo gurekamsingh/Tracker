@@ -25,6 +25,7 @@ app.use(cors({
   origin: [
     'http://localhost:8081',
     'http://10.0.0.42:8081',
+    'https://track-the-deadline.vercel.app',
     process.env.FRONTEND_URL || 'http://localhost:8081'
   ],
   credentials: true,
