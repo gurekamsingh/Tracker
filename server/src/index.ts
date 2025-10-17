@@ -51,8 +51,11 @@ app.get('/health', (_req, res) => {
 });
 
 // API routes
+console.log('Setting up auth routes...');
 app.use('/api/auth', authRoutes);
+console.log('Setting up deadline routes...');
 app.use('/api/deadlines', deadlineRoutes);
+console.log('Routes configured successfully');
 
 // 404 handler
 app.use((_req, res) => {

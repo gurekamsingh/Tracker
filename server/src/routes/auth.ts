@@ -22,6 +22,8 @@ const loginSchema = z.object({
 
 // Register
 router.post('/register', async (req, res, next) => {
+  console.log('Register route hit!', req.method, req.url);
+  console.log('Request body:', req.body);
   try {
     const { email, password, name } = registerSchema.parse(req.body);
 
