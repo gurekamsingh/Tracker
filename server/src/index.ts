@@ -38,18 +38,9 @@ const corsOptions = {
       process.env.FRONTEND_URL || 'http://localhost:8081'
     ];
     
-    // Only allow specific vercel.app subdomain for production
-    if (process.env.NODE_ENV === 'production') {
-      // Allow the specific frontend URL if it's a vercel.app domain
-      const frontendUrl = process.env.FRONTEND_URL;
-      if (frontendUrl && origin === frontendUrl) {
-        return callback(null, true);
-      }
-    } else {
-      // In development, allow any vercel.app subdomain
-      if (origin.endsWith('.vercel.app')) {
-        return callback(null, true);
-      }
+    // Allow any vercel.app subdomain for production
+    if (origin.endsWith('.vercel.app')) {
+      return callback(null, true);
     }
     
     if (allowedOrigins.includes(origin)) {
@@ -58,6 +49,7 @@ const corsOptions = {
       // Only log in development to avoid exposing origins in production
       if (process.env.NODE_ENV !== 'production') {
         console.log('CORS blocked origin:', origin);
+        console.log('Allowed origins:', allowedOrigins);
       }
       callback(new Error('Not allowed by CORS'));
     }
