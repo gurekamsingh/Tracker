@@ -13,6 +13,9 @@ A modern, full-stack web application for managing deadlines and tasks with real-
 **Frontend**: [https://track-the-deadline.vercel.app](https://track-the-deadline.vercel.app)  
 **Backend API**: [https://tracker-production-3c04.up.railway.app](https://tracker-production-3c04.up.railway.app)
 
+<img width="1771" height="950" alt="image" src="https://github.com/user-attachments/assets/b8c76950-e599-47ba-b864-8896efd15245" />
+
+
 ## ✨ Features
 
 ### 🔐 **Authentication & Security**
@@ -331,12 +334,6 @@ We welcome contributions! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
-
-**Your Name**  
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
-- LinkedIn: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)
 
 ## 🙏 Acknowledgments
 
@@ -353,7 +350,6 @@ If you encounter any issues or have questions:
 
 1. **Check** the [Issues](https://github.com/yourusername/deadline-tracker/issues) page
 2. **Create** a new issue with detailed description
-3. **Contact** the maintainer via email
 
 ---
 
