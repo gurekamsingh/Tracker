@@ -8,6 +8,7 @@ import { AuthRequest, authMiddleware } from '../middleware/auth';
 const router = express.Router();
 const prisma = new PrismaClient();
 
+
 // Validation schemas
 const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -22,8 +23,6 @@ const loginSchema = z.object({
 
 // Register
 router.post('/register', async (req, res, next) => {
-  console.log('Register route hit!', req.method, req.url);
-  console.log('Request body:', req.body);
   try {
     const { email, password, name } = registerSchema.parse(req.body);
 

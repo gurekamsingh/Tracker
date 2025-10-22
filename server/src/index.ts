@@ -18,27 +18,83 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet({
   contentSecurityPolicy: false, // Disable for API
   crossOriginEmbedderPolicy: false,
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  }
 }));
 
 // CORS configuration
-app.use(cors({
-  origin: [
-    'http://localhost:8081',
-    'http://10.0.0.42:8081',
-    'https://track-the-deadline.vercel.app',
-    process.env.FRONTEND_URL || 'http://localhost:8081'
-  ],
+const corsOptions = {
+  origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:8081',
+      'http://10.0.0.42:8081',
+      'https://track-the-deadline.vercel.app',
+      process.env.FRONTEND_URL || 'http://localhost:8081'
+    ];
+    
+    // Only allow specific vercel.app subdomain for production
+    if (process.env.NODE_ENV === 'production') {
+      // Allow the specific frontend URL if it's a vercel.app domain
+      const frontendUrl = process.env.FRONTEND_URL;
+      if (frontendUrl && origin === frontendUrl) {
+        return callback(null, true);
+      }
+    } else {
+      // In development, allow any vercel.app subdomain
+      if (origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+    }
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // Only log in development to avoid exposing origins in production
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('CORS blocked origin:', origin);
+      }
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+};
+
+app.use(cors(corsOptions));
 
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later',
+  message: { error: 'Too many requests from this IP, please try again later' },
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  skip: (req) => {
+    // Skip rate limiting for health checks
+    return req.url === '/health';
+  }
 });
 
 app.use('/api', limiter);
+
+// Additional security headers
+app.use((_req, res, next) => {
+  // Prevent clickjacking
+  res.setHeader('X-Frame-Options', 'DENY');
+  // Prevent MIME type sniffing
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  // Enable XSS protection
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));

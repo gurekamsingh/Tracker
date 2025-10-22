@@ -6,6 +6,7 @@ import { AuthRequest, authMiddleware } from '../middleware/auth';
 const router = express.Router();
 const prisma = new PrismaClient();
 
+
 // Apply auth middleware to all routes
 router.use(authMiddleware);
 
