@@ -60,7 +60,7 @@ export default function Index() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={logout}
+              onClick={() => logout()}
               className="border-2 border-black bg-white hover:bg-red-100 font-bold"
             >
               <LogOut className="h-4 w-4 mr-2" />

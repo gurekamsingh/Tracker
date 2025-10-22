@@ -12,7 +12,7 @@ interface AuthContextType {
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name?: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -44,20 +44,57 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(userData);
             setToken(storedToken);
           } else {
+            // Token is invalid or expired, clear it
             localStorage.removeItem('token');
             setToken(null);
+            setUser(null);
           }
         } catch (error) {
           console.error('Auth check failed:', error);
+          // Clear invalid token
           localStorage.removeItem('token');
           setToken(null);
+          setUser(null);
         }
+      } else {
+        // No token, ensure user is null
+        setUser(null);
+        setToken(null);
       }
       setIsLoading(false);
     };
 
     checkAuth();
-  }, []);
+
+    // Set up periodic token validation (every 5 minutes)
+    const interval = setInterval(async () => {
+      const currentToken = localStorage.getItem('token');
+      if (currentToken && user) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/me`, {
+            headers: {
+              Authorization: `Bearer ${currentToken}`,
+            },
+          });
+
+          if (!response.ok) {
+            // Token expired, logout user
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem('token');
+          }
+        } catch (error) {
+          console.error('Token validation failed:', error);
+          // Clear invalid token
+          setUser(null);
+          setToken(null);
+          localStorage.removeItem('token');
+        }
+      }
+    }, 5 * 60 * 1000); // Check every 5 minutes
+
+    return () => clearInterval(interval);
+  }, [user]);
 
   const login = async (email: string, password: string) => {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -125,10 +162,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('token', data.token);
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('token');
+  const logout = async () => {
+    try {
+      // Call server logout endpoint to clear server-side session
+      if (token) {
+        await fetch(`${API_BASE_URL}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Logout request failed:', error);
+      // Continue with local logout even if server request fails
+    } finally {
+      // Always clear local state
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem('token');
+    }
   };
 
   return (

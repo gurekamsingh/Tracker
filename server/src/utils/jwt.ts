@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this';
-const JWT_EXPIRES_IN = '7d';
+const JWT_EXPIRES_IN = '1h'; // 1 hour instead of 7 days
 
 export interface JwtPayload {
   userId: string;
