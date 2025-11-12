@@ -10,8 +10,7 @@ A modern, full-stack web application for managing deadlines and tasks with real-
 
 ## 🚀 Live Demo
 
-**Frontend**: [https://track-the-deadline.vercel.app](https://track-the-deadline.vercel.app)  
-**Backend API**: [https://tracker-production-3c04.up.railway.app](https://tracker-production-3c04.up.railway.app)
+**Link**: [https://track-the-deadline.vercel.app](https://track-the-deadline.vercel.app)
 
 <img width="1771" height="950" alt="image" src="https://github.com/user-attachments/assets/b8c76950-e599-47ba-b864-8896efd15245" />
 
